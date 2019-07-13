@@ -6,8 +6,6 @@ services:
     hostname: blog
     depends_on: 
       - db
-    volumes: 
-      - ./blog/wp-config.php:/var/www/html/wp-config.php
     ports:
       - "80:80"
       - "443:443"
