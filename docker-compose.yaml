@@ -1,0 +1,31 @@
+version: '2.1'
+
+services: 
+  blog:
+    image: wordpress
+    hostname: blog
+    depends_on: 
+      - db
+    volumes: 
+      - ./blog/wp-config.php:/var/www/html/wp-config.php
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - db
+  db:
+    image: mysql:5.7
+    hostname: db
+    environment:
+      MYSQL_ROOT_PASSWORD: yourpassword # mysql的root密码
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: yourpassword # mysql密码，不建议与root密码一致
+  nginx:
+    image: nginx:1.15.2
+    hostname: nginx
+    volumes:
+      - ./nginx/www/:/etc/nginx/html
+      - ./nginx/conf/wordpress.conf:/etc/nginx/wordpress.conf
+      - ./nginx/logs:/var/log/nginx
+      - ./nginx/cert:/cert
